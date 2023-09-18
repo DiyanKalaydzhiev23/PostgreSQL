@@ -7,6 +7,9 @@
 
 ---
 
+[Basic CRUD](https://forms.gle/VHcF8oj5qLz7a9ec7)
+
+---
 
 ## Plans
 
