@@ -11,6 +11,10 @@
 
 ---
 
+[Built-in Functions](https://forms.gle/zUacHr5xNV8YNVme7)
+
+---
+
 ## Plans
 
 ### Databases Introduction. Data Definition and Datatypes.
@@ -171,8 +175,10 @@ BUILD IN FUNCTIONS
 	    - нямаме полза да пазим празни места; 
 	    - можем да изтриваме и определен символ;
       - ще изтриваме всеки символ докато не намерим различен от този, който търсим.
-   - CHAR_LENGTH - STRING LENGTH; в постгрес е същото нещо като LENGTH
-   - BYTES_LENGTH - Всеки символ от ascii таблицата е 8 бита, за останалите зависи от encoding-a => "hello" => 5(length) * 8 = 40;
+   - CHAR_LENGTH - STRING LENGTH;
+   - LENGTH - Връща байтовете на един стринг.
+   	- LENGTH('café');
+       - Всеки символ от ascii таблицата е 1 байт, за останалите зависи от encoding-a => "café" => c - 1byte, a - 1byte, f - 1byte, é - 2 bytes;
    - LEFT, RIGHT, (string count)- вземат n на брой елементи, ляво и дясно; можем да подаваме отрицателни стойности и по този начин да взимаме всико без последните n елементи.
    - LOWER, UPPER, (string)
    - REVERSE, (string)
