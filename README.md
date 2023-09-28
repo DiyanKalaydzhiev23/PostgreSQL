@@ -295,8 +295,8 @@ Edge cases to keep in mind:
 	- По-сигурно е да са стрингове, защото по-трудно се разбиват с brute force
    	- Ако нещо е PK, то то вече е Unique
    1.4 Дефиниране на релации
-        - One To Many
-        - Many To One - постигаме чрез junction/mapping table
+        - Many To One
+        - Many To Many - постигаме чрез junction/mapping table
         - One To One
    1.5 Дефиниране на ограничения - CONSTRAINTS
    1.6 Попълване с тестови данни
