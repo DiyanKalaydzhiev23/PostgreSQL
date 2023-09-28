@@ -19,6 +19,10 @@
 
 ---
 
+[Table Relations](https://forms.gle/qYAZDquBNGSQmTYx9)
+
+---
+
 ## Plans
 
 ### Databases Introduction. Data Definition and Datatypes.
