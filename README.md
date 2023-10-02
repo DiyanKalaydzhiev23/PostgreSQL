@@ -23,6 +23,10 @@
 
 ---
 
+[Subqueries and Joins](https://forms.gle/iquiVSbKE2xd7QRTA)
+
+---
+
 ## Plans
 
 ### Databases Introduction. Data Definition and Datatypes.
