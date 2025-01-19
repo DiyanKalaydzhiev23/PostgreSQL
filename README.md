@@ -16,6 +16,10 @@
 
 ---
 
+[Data Aggregation](https://forms.gle/zDr5w2v5uDfTxT6v5)
+
+---
+
 ## Plans
 
 ### Databases Introduction. Data Definition and Datatypes.
