@@ -24,6 +24,10 @@
 
 ---
 
+[Subqueries and Joins](https://forms.gle/iquiVSbKE2xd7QRTA)
+
+---
+
 ## Plans
 
 ### Databases Introduction. Data Definition and Datatypes.
@@ -328,4 +332,35 @@ Good to keep in mind:
 
 ---
 
+### Subqueries and Joins
 
+1. Joins - better than selects with where in performance
+   - Inner Join - Default join - join where both are not null, if one is null both are not visualized
+   - Left Join - Join the left table if right is null
+   - Right Join - Join the right if left is null
+   - Full join (union) - join everything
+   - Outer join (union) - less used
+   - Cross Join - every element from one table with every element from the other - not used often
+
+2. Subqueries
+   - SELECT FROM SELECT
+   - Example:
+   ```sql
+   
+   SELECT first_name, last_name, department, salary
+   FROM employees
+   WHERE salary > (
+      SELECT AVG(salary)
+      FROM employees
+      WHERE department = 'Finance'
+   );
+
+3. Indicies
+   - Индексиране на таблица е създаване на структура върху нашата таблица, която гледа и анализира нашата таблица и прави един вид шорткът
+   - Като голяма книга, с разделители и примерно, ако търсиш зебра отиваш на буквата З
+   - Два вида индекси
+	- Clustered - сортиране на стойностите с цел бинарно търсене
+        - Non-clustered - B-Tree (Balanced Tree) - създава уникални node-ове и всеки node държи pointer към записите
+   - Създавайки индекси по-бързо четем, но по-бавно update-ваме и трием записи, също така губим памет.
+
+---
