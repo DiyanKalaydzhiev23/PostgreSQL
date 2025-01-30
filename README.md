@@ -455,4 +455,13 @@ FOR EACH ROW EXECUTE FUNCTION update_last_modified();
 
 *plpgsql - Procedural Language/PostgreSQL
 
+5. Поддържани езици
+- plpgsql (Trusted) - Built-in, commonly used for stored procedures.
+- plpythonu (Untrusted) - Python, but needs superuser privileges to install.
+- plperl / plperlu - Perl (untrusted variant allows system access).
+- pllua - Lua scripting.
+- plv8 - JavaScript (V8 Engine).
+- pljava - Java for complex business logic.
+
+
 ---
