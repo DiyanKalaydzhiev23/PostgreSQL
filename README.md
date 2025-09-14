@@ -8,6 +8,10 @@
 
 ---
 
+[Basic CRUD](https://forms.gle/VHcF8oj5qLz7a9ec7)
+
+---
+
 
 ### Databases Introduction. Data Definition and Datatypes.
 
@@ -82,3 +86,71 @@
 - TIME - време без дата
 - TIMESTAMP - дата и час
 - TIMESTAMPZ - дата, час и часова зона
+
+ 
+---
+
+### CRUD - Create, Read, Update, Delete
+
+1. Извличаме данни със SELECT - READ
+- Moжем да филтрираме с WHERE
+- SELECT * FROM project WHERE start_date='2023-06-01';
+- ORDER BY - сортира данните
+  - SELECT * FROM project ORDER BY id
+  - ORDER BY first_name DESC, last_name ASC;
+- SELECT id as 'No.' ...;
+- SELECT e.id FROM employees as e;
+- CONCAT() ex. SELECT CONCAT(first_name, ' ', second_name) as full_name ...;
+- CONCAT_WS(); конкатенира пропускайки NULL стойностите
+- SELECT DISTINCT елиминира дублиращи се резултати
+- WHERE; WHERE id NOT IN ...; WHERE id = 1 OR/AND ...; WHERE id IN (1, 2, 3);
+- NULL != 0 != '';
+- WHERE id IS NULL; грешно е да пишем WHERE id = NULL;
+- LIMIT 3; лимитираме бройката редове, които се получават;
+- OFFSET 3 LIMIT 1; прескача първите 3 реда и взима следващия 1;
+-
+     `CREATE TABLE customer_contancts AS
+         SELECT
+            customer_id,
+              first_name
+         FROM customers;`
+
+- Създава таблица с полетата от друга таблица и с данните;
+- BETWEEN 1 AND 3 - ползва <= >=;
+
+1.1 Проекция - какви колони искамe да вземем
+
+1.2 Селекция - когато взимам някакви редове - често постигаме чрез WHERE
+
+1.3 Join - комбиниране на колони
+
+</br>
+
+2.Обновяваме данни с UPDATE
+- Искаме да update-ваме с условие в 99% от случаите
+  `UPDATE projects
+     SET end_date = '2006-02-02'
+     WHERE start_date = '2005-01-01';`
+
+2.2 INSERT
+- NOW() - дава текущото време;
+   `INSERT INTO projects(name, start_date)
+     SELECT
+         CONCAT(name, ' ', last_name),
+         NOW()
+     FROM departments;`
+
+3.Изтриване на данни с DELETE
+- `DELETE FROM projects WHERE start_date = '2006-01-01';`
+
+4.Views - запазваме заявки за селектиране
+- `CREATE VIEW v_hr_result_set AS
+     SELECT
+         CONCAT(fisrt_name, ' ', last_name) AS 'full name',
+         salary
+     FROM employees ORDER BY department_id;`
+
+- `SELECT * FROM v_hr_result_set` - за да ползваме view-то
+- Aко искаме да променим или update-нем view казваме `ALTER VIEW`
+
+---
