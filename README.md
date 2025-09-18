@@ -12,6 +12,10 @@
 
 ---
 
+[Built-in Functions](https://forms.gle/zUacHr5xNV8YNVme7)
+
+---
+
 
 ### Databases Introduction. Data Definition and Datatypes.
 
@@ -154,3 +158,61 @@
 - Aко искаме да променим или update-нем view казваме `ALTER VIEW`
 
 ---
+
+
+---
+
+BUILD IN FUNCTIONS
+
+1. String, Math, Date And Time
+
+2. String Functions
+   - SUBSTRING(string, position, length: optional) - String from Position for Length, също може да бъде използван за това дали един стринг е събстринг на друг.
+   - REPLACE(string, string to replace, to replace with) - case sensitive
+   - LTRIM, RTRIM - маха празни разстояния от ляво и от дясно 
+	    - нямаме полза да пазим празни места; 
+	    - можем да изтриваме и определен символ;
+      - ще изтриваме всеки символ докато не намерим различен от този, който търсим.
+   - CHAR_LENGTH - STRING LENGTH;
+   - LENGTH - Връща дължината на един стринг.
+   - BIT_LENGTH - Всеки символ от ascii таблицата е 8 байтa, за останалите зависи от encoding-a => "café" => c - 1byte, a - 8bits, f - 1byte, é - 16 bits;
+   - LEFT, RIGHT, (string count)- вземат n на брой елементи, ляво и дясно; можем да подаваме отрицателни стойности и по този начин да взимаме всико без последните n елементи.
+   - LOWER, UPPER, (string)
+   - REVERSE, (string)
+   - REPEAT, (string, count)
+   - INSERT(String, Position, chars count to delete, sub string)
+   - POSITION - ex. POSITION('b' IN some_field) - връща индекса, на който е намерило въпросната стойност.
+   ```sql
+   SELECT POSITION('sub' IN 'This is a substring example') AS position; -- 11
+   ```
+
+3. Math Functions
+   - /, -, *, +
+   - АBS
+   - PI
+   ```sql
+   SELECT PI() AS pi_value;
+   ```
+   - SQRT (NUMBER)
+   - POW (NUMBER, POWER) - степенуване
+   - ROUND - UP >= 5 DOWN 4 <= - (NUMBER, PERCISION)
+   - FLOOR, CEIL
+   - SIGN(NUMBER) - връща знака като 1, -1 или 0
+   - RANDOM() - връща число между 0 и 1
+   - SELECT CEIL(RANDOM() * 100) % 7 AS random_mod_7; връща число между 0 и 6;
+
+4. Date Functions
+   - EXTRACT (PART FROM DATE) - PART - YEAR, MONTH, DAY, MINUTES...
+   - AGE() - връща разликата между две дати
+   - TO_CHAR() 
+	- TO_CHAR(NOW() AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI:SS TZD');
+	- Резултат '2023-09-20 12:34:56 UTC'
+
+5. WILD_CARDS
+   - LIKE() - подобно на регекс търси дали нещо започва/завършва или двете едновременно на някакъв string/pattern
+	    - % означава 0 или повече символи преди/след string-a 
+	    - _ е за попълване на точна позиция 
+   - REGEXP
+
+---
+
