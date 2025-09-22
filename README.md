@@ -16,6 +16,10 @@
 
 ---
 
+[Data Aggregation](https://forms.gle/zDr5w2v5uDfTxT6v5)
+
+---
+
 
 ### Databases Introduction. Data Definition and Datatypes.
 
@@ -213,6 +217,68 @@ BUILD IN FUNCTIONS
 	    - % означава 0 или повече символи преди/след string-a 
 	    - _ е за попълване на точна позиция 
    - REGEXP
+
+---
+
+
+### Data Aggregation
+
+<b>Агрегация - процес на обединение на различни елементи в една система.</b>
+
+1. Grouping 
+- Третираме еднакви записи като един 
+- При GROUP BY, за разлика от distinct можем да ползваме агрегиращи функции
+- COUNT(DISTINCT()) - ще даде броя на групите
+- COUNT(*) - брой редовете
+
+2. Aggregate functions
+- AVG, MIN, MAX, COUNT, SUM
+
+3. Having 
+
+- Допълнителна филтрация, в която можем да използваме агрегиращи функции
+- Извършва се след като данните са взети
+
+4. CASE
+
+- Simple Case
+  - Използваме, когато сравняваме само една стойност
+
+```sql
+SELECT 
+    column_name,
+    CASE grade
+        WHEN 'A' THEN 'Excellent'
+        WHEN 'B' THEN 'Good'
+        WHEN 'C' THEN 'Fair'
+        ELSE 'Poor'
+    END AS grade_description
+FROM student_grades;
+```
+
+
+- General Case
+  - Използваме, когато  сравняваме различни условия
+
+
+```sql
+SELECT 
+    column_name,
+    CASE 
+        WHEN grade >= 90 THEN 'Excellent'
+        WHEN grade >= 80 THEN 'Good'
+        WHEN grade >= 70 THEN 'Fair'
+	WHEN grade <= 0 THEN 'Mistake'
+        ELSE 'Poor'
+    END AS grade_description
+FROM student_grades;
+```
+
+Edge cases to keep in mind:
+
+* COUNT() - брои всичко без Null
+* where се изпълнява преди да се върнат данните, нещо като if, върху този резултат правим групиране и върху него чак тогава having
+* where филтрира преди да се вземат данните, докато having е след като са взети
 
 ---
 
