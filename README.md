@@ -24,6 +24,10 @@
 
 ---
 
+[Subqueries and Joins](https://forms.gle/iquiVSbKE2xd7QRTA)
+
+---
+
 ### Databases Introduction. Data Definition and Datatypes.
 
 `Едно е само да съхраняваме данни, друго е вече да ги менижираме`
@@ -301,7 +305,7 @@ Edge cases to keep in mind:
 	- По-сигурно е да са стрингове, защото по-трудно се разбиват с brute force
    	- Ако нещо е PK, то то вече е Unique
    	  
-   1.4 Дефиниране на релации
+   1.4 Дефиниране на връзки
         - Many To One
         - Many To Many - постигаме чрез junction/mapping table
         - One To One
@@ -311,7 +315,7 @@ Edge cases to keep in mind:
    1.6 Попълване с тестови данни
 
 3. Cascade delete
-   - Изтривайки един запис, свързан с други записи посредством релация, изтриваме всички записи.
+   - Изтривайки един запис, свързан с други записи посредством връзки, изтриваме всички записи.
 
    - Използваме, когато искаме да запазим консистентност на данните
    - Не го използваме, когато искаме да запазим някаква история или логове.
@@ -335,5 +339,39 @@ Edge cases to keep in mind:
 Good to keep in mind:
 
 *Композитен ключ е ключ създаден от условие пример concat(f_name, l_name)
+
+---
+
+
+### Subqueries and Joins
+
+1. Joins - better than selects with where in performance
+   - Inner Join - Default join - join where both are not null, if one is null both are not visualized
+   - Left Join - Join the left table if right is null
+   - Right Join - Join the right if left is null
+   - Full join (union) - join everything
+   - Outer join (union) - less used
+   - Cross Join - every element from one table with every element from the other - not used often
+
+2. Subqueries
+   - SELECT FROM SELECT
+   - Example:
+   ```sql
+   
+   SELECT first_name, last_name, department, salary
+   FROM employees
+   WHERE salary > (
+      SELECT AVG(salary)
+      FROM employees
+      WHERE department = 'Finance'
+   );
+
+3. Indicies
+   - Индексиране на таблица е създаване на структура върху нашата таблица, която гледа и анализира нашата таблица и прави един вид шорткът
+   - Като голяма книга, с разделители и примерно, ако търсиш зебра отиваш на буквата З
+   - Два вида индекси
+	- Clustered - сортиране на стойностите с цел бинарно търсене
+        - Non-clustered - B-Tree (Balanced Tree) - създава уникални node-ове и всеки node държи pointer към записите
+   - Създавайки индекси по-бързо четем, но по-бавно update-ваме и трием записи, също така губим памет.
 
 ---
