@@ -350,7 +350,6 @@ Good to keep in mind:
    - Left Join - Join the left table if right is null
    - Right Join - Join the right if left is null
    - Full join (union) - join everything
-   - Outer join (union) - less used
    - Cross Join - every element from one table with every element from the other - not used often
 
 2. Subqueries
