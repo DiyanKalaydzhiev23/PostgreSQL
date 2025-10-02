@@ -28,6 +28,10 @@
 
 ---
 
+[Data Programmability](https://forms.gle/bWeXZg21VBwMLyQ17)
+
+---
+
 ### Databases Introduction. Data Definition and Datatypes.
 
 `Едно е само да съхраняваме данни, друго е вече да ги менижираме`
@@ -372,5 +376,103 @@ Good to keep in mind:
 	- Clustered - сортиране на стойностите с цел бинарно търсене
         - Non-clustered - B-Tree (Balanced Tree) - създава уникални node-ове и всеки node държи pointer към записите
    - Създавайки индекси по-бързо четем, но по-бавно update-ваме и трием записи, също така губим памет.
+
+---
+
+
+
+### Database Programmability
+
+1. Functions
+- Създаваме си наши функции подобно на view-та
+- Създаваме функцията
+  - Ф-цията може да бъде на различни езици
+- Казваме какво връща като тип
+- Функциите в postgres биват 3 типа
+	- STABLE - това са фунцкиите, които при една и съща таблица връщат един и същ резултат, ф-ция за броя редове
+	- IMMUTABLE - функцията винаги ще връща един и същи резултат, независима от таблици, пример квадрат на число
+	- VOLATILE - това са функциите по-подразбиране, променливи
+- Дефинирайки функция, като STABLE или IMMUTABLE, може да подобрим нейното бързодействие
+- Можем да достъпваме променливи чрез $цифра, но не е преопоръчително
+
+2. Procedures
+- повечето случаи void фунцкции
+- execute by CALL 
+
+3. Transactionsx
+- Дейстивия, които извършваме върху базата и можем да върнем, ако пожелаем
+
+```sql
+-- Start a transaction
+BEGIN;
+
+-- Deduct $100 from Alice's account
+UPDATE accounts SET balance = balance - 100 WHERE account_id = 1;
+
+-- Add $100 to Bob's account
+UPDATE accounts SET balance = balance + 100 WHERE account_id = 2;
+
+-- Check Bob's new balance
+DECLARE
+    bob_balance DECIMAL(20,2);
+BEGIN
+    SELECT balance INTO bob_balance FROM accounts WHERE account_id = 2;
+    IF bob_balance > 1000 THEN
+        RAISE NOTICE 'Bob has too much money. Rolling back transaction.';
+        ROLLBACK;
+        RETURN;
+    END IF;
+END;
+```
+
+- Savepoint Example:
+
+```sql
+-- Start the transaction
+BEGIN;
+
+-- Add some amount
+UPDATE accounts SET balance = balance + 50 WHERE id = 1;
+
+-- Create a savepoint
+SAVEPOINT my_savepoint;
+
+-- Deduct some amount
+UPDATE accounts SET balance = balance - 30 WHERE id = 1;
+
+-- Decide for some reason to rollback to the savepoint
+ROLLBACK TO SAVEPOINT my_savepoint;
+
+END;
+```
+
+4. Trigger
+- Functions executed Before/After a DELETE/UPDATE/INSERT query
+- Example:
+
+```sql
+CREATE OR REPLACE FUNCTION update_last_modified()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.last_modified = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_last_modified
+BEFORE UPDATE ON products
+FOR EACH ROW EXECUTE FUNCTION update_last_modified();
+```
+
+*plpgsql - Procedural Language/PostgreSQL
+
+5. Поддържани езици
+- plpgsql (Trusted) - Built-in, commonly used for stored procedures.
+- plpythonu (Untrusted) - Python, but needs superuser privileges to install.
+- plperl / plperlu - Perl (untrusted variant allows system access).
+- pllua - Lua scripting.
+- plv8 - JavaScript (V8 Engine).
+- pljava - Java for complex business logic.
+
 
 ---
