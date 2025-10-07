@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Live Absences</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Supabase JS v2 (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    th { text-align: left; }
+    .muted { opacity: .7; font-size: .9em; }
+  </style>
+</head>
+<body>
+  <h1>Live Absences</h1>
+  <p class="muted">Auto-refreshes when <code>absences</code> changes.</p>
+
+  <table id="absencesTable">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Session Date</th>
+        <th>Logged At</th>
+      </tr>
+    </thead>
+    <tbody id="absencesBody">
+      <tr><td colspan="3" class="muted">Loading…</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    // 1) Configure your project
+    const SUPABASE_URL = "https://<project_id>.supabase.co";
+    const SUPABASE_ANON_KEY = "anon_key"; // use anon/public key in the browser
+
+    // 2) Init client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 3) Render helper
+    function renderRows(rows) {
+      const tbody = document.getElementById('absencesBody');
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="muted">No absences.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = rows.map(r => {
+        const studentName = r.students?.name ?? r.student_name ?? "(unknown)";
+        const sessionDate = r.sessions?.session_date ?? r.session_date ?? "";
+        const loggedAt = r.logged_at ?? r.logged_at_ts ?? "";
+        return `<tr>
+          <td>${escapeHtml(studentName)}</td>
+          <td>${escapeHtml(sessionDate)}</td>
+          <td>${escapeHtml(new Date(loggedAt).toLocaleString())}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    // simple XSS-safe encoder
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    // 4) Fetch data (uses FK-based embedding; fallback shown below)
+    async function fetchAbsences() {
+      // If FKs exist and are detected by Supabase, this returns nested rows:
+      // absences.id, logged_at, plus students(name) and sessions(session_date)
+      const { data, error } = await supabase
+        .from('absences')
+        .select(`
+          id,
+          logged_at,
+          students:student_id ( name ),
+          sessions:session_id ( session_date )
+        `)
+        .order('logged_at', { ascending: false })
+        .limit(100);
+
+      if (error) {
+        console.error(error);
+        // Fallback: try a view if the embed failed (no FKs). See note below.
+        // await fetchFromView();
+        return;
+      }
+      renderRows(data);
+    }
+
+    // Optional fallback if you create a view (see note below):
+    async function fetchFromView() {
+      const { data, error } = await supabase
+        .from('absences_view') // CREATE VIEW absences_view AS SELECT ...
+        .select('*')
+        .order('logged_at', { ascending: false })
+        .limit(100);
+
+      if (error) { console.error(error); return; }
+      renderRows(data);
+    }
+
+    // 5) Realtime: refresh when absences change
+    function setupRealtime() {
+      supabase
+        .channel('absences-live')
+        .on('postgres_changes',
+          { event: '*', schema: 'public', table: 'absences' },
+          (payload) => {
+            // simplest: re-fetch whole list (keeps code tiny)
+            fetchAbsences();
+          }
+        )
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            // Initial load after subscription
+            fetchAbsences();
+          }
+        });
+    }
+
+    // Kick things off
+    setupRealtime();
+  </script>
+</body>
+</html>
