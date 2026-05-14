@@ -1,0 +1,1 @@
+TRUNCATE minions_info;
