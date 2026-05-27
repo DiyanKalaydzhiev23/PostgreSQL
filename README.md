@@ -219,9 +219,6 @@
 
 ---
 
----
-
-
 ### Data Aggregation
 
 <b>Агрегация - процес на обединение на различни елементи в една система.</b>
@@ -269,7 +266,7 @@ SELECT
         WHEN grade >= 90 THEN 'Excellent'
         WHEN grade >= 80 THEN 'Good'
         WHEN grade >= 70 THEN 'Fair'
-	WHEN grade <= 0 THEN 'Mistake'
+		WHEN grade <= 0 THEN 'Mistake'
         ELSE 'Poor'
     END AS grade_description
 FROM student_grades;
