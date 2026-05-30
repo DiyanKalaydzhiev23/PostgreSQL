@@ -20,6 +20,10 @@
 
 ---
 
+[Table Relations](https://forms.gle/qYAZDquBNGSQmTYx9)
+
+---
+
 
 
 ### Databases Introduction. Data Definition and Datatypes.
