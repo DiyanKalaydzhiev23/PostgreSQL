@@ -1,0 +1,20 @@
+CREATE OR REPLACE PROCEDURE sp_transfer_money(
+	sender_id INT,
+	receiver_id INT,
+	amount NUMERIC
+)
+AS
+$$
+DECLARE
+	current_balance NUMERIC;
+BEGIN
+	SELECT balance INTO current_balance FROM accounts WHERE id = sender_id;
+
+	CALL sp_withdraw_money(sender_id, amount);
+
+	IF (current_balance >= amount) THEN
+		CALL sp_deposit_money(receiver_id, amount);
+	END IF;
+END;
+$$
+LANGUAGE plpgsql;
